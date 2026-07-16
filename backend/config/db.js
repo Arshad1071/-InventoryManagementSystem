@@ -3,20 +3,22 @@
 const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "Fcb@2k18",
-  database: "inventory_db",
+  host: process.env.DB_HOST || "127.0.0.1",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "Fcb@2k18",
+  database: process.env.DB_NAME || "inventory_db",
 });
 
 connection.connect((err) => {
   if (err) {
-    console.log(process.env.DB_NAME);
     console.error("❌ Database connection failed:", err.message);
-    process.exit(1);
+  } else {
+    console.log("✅ MySQL Connected Successfully");
   }
-
-  console.log("✅ MySQL Connected Successfully");
 });
 
-module.exports = connection;
+connection.on("error", (err) => {
+  console.error("❌ MySQL Connection error event:", err.message);
+});
+
+module.exports = connection.promise();

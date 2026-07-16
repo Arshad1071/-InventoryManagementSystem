@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
+import { registerUser } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
 const Register = () => {
@@ -18,34 +20,34 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log(user);
+    try {
+      const response = await registerUser(user);
 
-    // TODO
-    // axios.post("http://localhost:5000/api/auth/register", user)
+      alert(response.message);
+
+      navigate("/");
+    } catch (error) {
+      alert(error.message || "Registration Failed");
+    }
   };
 
   return (
     <div className="register-container">
-
       <div className="register-card">
-
         <div className="register-header">
-
           <FaUserPlus className="register-icon" />
 
           <h2>Create Account</h2>
 
           <p>Inventory Management System</p>
-
         </div>
 
         <form onSubmit={handleSubmit}>
-
           <div className="form-group">
-
             <label>Full Name</label>
 
             <input
@@ -56,11 +58,9 @@ const Register = () => {
               onChange={handleChange}
               required
             />
-
           </div>
 
           <div className="form-group">
-
             <label>Email</label>
 
             <input
@@ -71,11 +71,9 @@ const Register = () => {
               onChange={handleChange}
               required
             />
-
           </div>
 
           <div className="form-group">
-
             <label>Password</label>
 
             <input
@@ -86,42 +84,25 @@ const Register = () => {
               onChange={handleChange}
               required
             />
-
           </div>
 
           <div className="form-group">
-
             <label>Role</label>
 
-            <select
-              name="role"
-              value={user.role}
-              onChange={handleChange}
-            >
+            <select name="role" value={user.role} onChange={handleChange}>
               <option value="Staff">Staff</option>
               <option value="Admin">Admin</option>
             </select>
-
           </div>
 
-          <button className="register-btn">
-            Register
-          </button>
-
+          <button className="register-btn">Register</button>
         </form>
 
         <div className="login-link">
-
           Already have an account?
-
-          <Link to="/">
-            Login
-          </Link>
-
+          <Link to="/">Login</Link>
         </div>
-
       </div>
-
     </div>
   );
 };
