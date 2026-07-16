@@ -9,15 +9,6 @@ const connection = mysql.createConnection({
   database: "inventory_db",
 });
 
-// PORT=5000
-
-// DB_HOST=
-// DB_USER=root
-// DB_PASSWORD=
-// DB_NAME=i
-
-
-
 connection.connect((err) => {
   if (err) {
     console.log(process.env.DB_NAME);
