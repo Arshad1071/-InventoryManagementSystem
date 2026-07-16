@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FaPlus, FaSearch, FaEdit, FaTrash } from "react-icons/fa";
+import { FaPlus, FaSearch, FaEdit, FaTrash, FaMinus } from "react-icons/fa";
+
 import {
   getProducts,
   createProduct,
@@ -148,10 +149,16 @@ const Products = () => {
                   <td>₹ {item.price}</td>
                   <td>{item.quantity}</td>
                   <td>
-                    <button className="edit" onClick={() => handleOpenEditModal(item)}>
+                    <button
+                      className="edit"
+                      onClick={() => handleOpenEditModal(item)}
+                    >
                       <FaEdit />
                     </button>
-                    <button className="delete" onClick={() => handleDelete(item.id)}>
+                    <button
+                      className="delete"
+                      onClick={() => handleDelete(item.id)}
+                    >
                       <FaTrash />
                     </button>
                   </td>
@@ -204,7 +211,7 @@ const Products = () => {
                   min="0"
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Quantity</label>
                 <input
                   type="number"
@@ -215,9 +222,75 @@ const Products = () => {
                   placeholder="Quantity"
                   min="0"
                 />
+                <div style={{ marginLeft: "150px" }}>
+                  <button
+                    className="edit"
+                    handleInputChange
+                    onClick={() => {
+                      setFormData({
+                        ...formData,
+                        "quantity": formData.quantity++,
+                      });
+                    }}
+                  >
+                    <FaPlus />
+                  </button>
+                  <button
+                    className="delete"
+                    //onClick={() => handleDelete(item.id)}
+                  >
+                    <FaMinus />
+                  </button>
+                </div>
+              </div> */}
+              <div className="form-group">
+                <label>Quantity</label>
+
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
+                  <button
+                    type="button"
+                    className="edit"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        quantity: Math.max(0, Number(formData.quantity) + 1),
+                      })
+                    }
+                  >
+                    <FaPlus />
+                  </button>
+
+                  <input
+                    type="number"
+                    name="quantity"
+                    value={formData.quantity}
+                    onChange={handleInputChange}
+                    min="0"
+                    style={{ width: "80px", textAlign: "center" }}
+                  />
+
+                  <button
+                    type="button"
+                    className="delete"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        quantity: Math.max(0, Number(formData.quantity) - 1),
+                      })
+                    }
+                  >
+                    <FaMinus />
+                  </button>
+                </div>
               </div>
               <div className="modal-actions">
-                <button type="button" className="cancel-btn" onClick={() => setIsModalOpen(false)}>
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={() => setIsModalOpen(false)}
+                >
                   Cancel
                 </button>
                 <button type="submit" className="save-btn">
