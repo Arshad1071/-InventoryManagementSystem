@@ -46,66 +46,66 @@ exports.register = async (req, res) => {
 
 // ================= LOGIN =================
 
-// exports.login = async (req, res) => {
+exports.login = async (req, res) => {
 
-//   try {
+  try {
 
-//     const { email, password } = req.body;
+    const { email, password } = req.body;
 
-//     const [rows] = await db.query(
-//       "SELECT * FROM users WHERE email=?",
-//       [email]
-//     );
+    const [rows] = await db.query(
+      "SELECT * FROM users WHERE email=?",
+      [email]
+    );
 
-//     if (rows.length === 0) {
-//       return res.status(401).json({
-//         message: "Invalid Email or Password",
-//       });
-//     }
+    if (rows.length === 0) {
+      return res.status(401).json({
+        message: "Invalid Email or Password",
+      });
+    }
 
-//     const user = rows[0];
+    const user = rows[0];
 
-//     const isMatch = await bcrypt.compare(
-//       password,
-//       user.password
-//     );
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
 
-//     if (!isMatch) {
-//       return res.status(401).json({
-//         message: "Invalid Email or Password",
-//       });
-//     }
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Invalid Email or Password",
+      });
+    }
 
-//     const token = jwt.sign(
-//       {
-//         id: user.id,
-//         role: user.role,
-//       },
-//       process.env.JWT_SECRET,
-//       {
-//         expiresIn: "1d",
-//       }
-//     );
+    const token = jwt.sign(
+      {
+        id: user.id,
+        role: user.role,
+      },
+      process.env.JWT_SECRET || "mysecretkey",
+      {
+        expiresIn: "1d",
+      }
+    );
 
-//     res.json({
-//       message: "Login Successful",
-//       token,
-//       user: {
-//         id: user.id,
-//         name: user.name,
-//         email: user.email,
-//         role: user.role,
-//       },
-//     });
+    res.json({
+      message: "Login Successful",
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
 
-//   } catch (error) {
+  } catch (error) {
 
-//     console.log(error);
+    console.log(error);
 
-//     res.status(500).json({
-//       message: "Server Error",
-//     });
+    res.status(500).json({
+      message: "Server Error",
+    });
 
-//   }
+  }
 
-// };
+};

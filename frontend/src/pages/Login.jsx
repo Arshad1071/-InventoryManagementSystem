@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
+import { loginUser } from "../services/authService";
 import "./Login.css";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -16,13 +18,16 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
-
-    // TODO:
-    // Call Login API using Axios
+    try {
+      const response = await loginUser(formData);
+      alert(response.message || "Login Successful");
+      navigate("/dashboard");
+    } catch (error) {
+      alert(error.message || "Invalid Email or Password");
+    }
   };
 
   return (
